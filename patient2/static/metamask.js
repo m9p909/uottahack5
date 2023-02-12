@@ -1911,7 +1911,7 @@
   var setupLogin = () => {
     const loginButton = document.getElementById("metamask-button");
     const getNonce = (key) => fetch(`/login?publicAddress=${key}`).then((res) => res.text());
-    const verifySignature = (signedNonce, sig) => fetch("/verify-signature", {
+    const verifySignature = (signedNonce) => fetch("/verify-signature", {
       method: "Post",
       body: JSON.stringify({ sig: signedNonce }),
       headers: [["content-type", "application/json"]]

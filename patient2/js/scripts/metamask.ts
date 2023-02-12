@@ -11,7 +11,7 @@ const setupLogin = () => {
 
   const getNonce = (key: string) => fetch(`/login?publicAddress=${key}`).then((res) => res.text())
 
-  const verifySignature = (signedNonce: string, sig: string) => fetch("/verify-signature", {
+  const verifySignature = (signedNonce: string) => fetch("/verify-signature", {
     method: "Post", body: JSON.stringify({ sig: signedNonce }),
     headers: [['content-type', 'application/json']]
   })
