@@ -1,4 +1,5 @@
 import { MetaMaskInpageProvider } from "@metamask/providers"
+import { Buffer } from 'buffer'
 
 const eth = window.ethereum as MetaMaskInpageProvider
 
@@ -11,7 +12,7 @@ const setupLogin = () => {
   const getNonce = (key: string) => fetch(`/login?publicAddress=${key}`).then((res) => res.text())
 
   const verifySignature = (signedNonce: string, sig: string) => fetch("/verify-signature", {
-    method: "Post", body: JSON.stringify({ message: signedNonce, sig }),
+    method: "Post", body: JSON.stringify({ sig: signedNonce }),
     headers: [['content-type', 'application/json']]
   })
 
@@ -25,7 +26,7 @@ const setupLogin = () => {
     const sig = crypto.randomUUID()
     const signedNonce = await eth.request<string>({
       method: 'personal_sign',
-      params: [nonce, key, sig]
+      params: [`0x${Buffer.from(nonce).toString('hex')}`, key]
     })
     if (signedNonce) {
       const message = await verifySignature(signedNonce, sig)

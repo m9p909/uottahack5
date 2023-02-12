@@ -75,16 +75,9 @@ class Metamask:
 
     def verify_signature(self, sighash: str, ogmessage: str, address: str):
         messageEncoded = encode_defunct(text=ogmessage)
-        print("verify1")
-        print(sighash)
-        print(ogmessage)
-
         signed_address = w3.eth.account.recover_message(
-            messageEncoded, signature=HexBytes(sighash))
+            messageEncoded, signature=HexBytes(sighash)).lower()
 
-        print("verify")
-        print(signed_address)
-        print(address)
         if signed_address == address:
             user = self.repo.getUser(address)
             if user:
@@ -133,7 +126,6 @@ async def login_request(request: Request,  publicAddress: str):
 
 
 class VerifySignatureBody(BaseModel):
-    message: str
     sig: str
 
 
@@ -141,8 +133,6 @@ class VerifySignatureBody(BaseModel):
 async def verify_signature(request: Request, body: VerifySignatureBody):
     address = sessions.getSessionValue(request, session_keys.address)
     originalMessage = sessions.getSessionValue(request, session_keys.nonce)
-    print('verify controller')
-    print(address)
     if (metamask.verify_signature(body.sig, originalMessage, address)):
         sessions.setSessionValue(
             request,  session_keys.verified, True)

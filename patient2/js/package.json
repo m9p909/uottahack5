@@ -8,6 +8,7 @@
   "license": "ISC",
   "dependencies": {
     "@metamask/providers": "^10.2.1",
+    "buffer": "^6.0.3",
     "esbuild": "^0.17.7",
     "web3": "^1.8.2"
   }
