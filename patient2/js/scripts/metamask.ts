@@ -23,13 +23,12 @@ const setupLogin = () => {
     }
     const key = accounts[0]
     const nonce = await getNonce(key)
-    const sig = crypto.randomUUID()
     const signedNonce = await eth.request<string>({
       method: 'personal_sign',
       params: [`0x${Buffer.from(nonce).toString('hex')}`, key]
     })
     if (signedNonce) {
-      const message = await verifySignature(signedNonce, sig)
+      const message = await verifySignature(signedNonce)
     }
 
 
